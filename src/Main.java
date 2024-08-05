@@ -1,7 +1,8 @@
-package main;
+package src;
 
 import java.util.Scanner;
-import main.GameObjects.*;
+import com.google.gson.Gson;
+import src.GameObjects.*;
 
 public class Main {
 
@@ -12,6 +13,7 @@ public class Main {
 
     // Static values
     public static Scanner scanner = new Scanner(System.in);
+    public static Gson gson = new Gson();
     public static Game currentGame;
 
     // Main method

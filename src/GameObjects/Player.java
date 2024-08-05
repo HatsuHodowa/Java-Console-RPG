@@ -1,6 +1,6 @@
-package main.GameObjects;
+package src.GameObjects;
 
-import main.*;
+import src.*;
 
 public class Player {
 
@@ -8,7 +8,7 @@ public class Player {
     public static final int SKILL_POINTS_PER_LEVEL = 3;
 
     // Other properties
-    Game game;
+    transient Game game;
 
     // Character details
     String firstName;
@@ -18,7 +18,7 @@ public class Player {
     // Levels and experience
     int level = 1;
     int experience = 0;
-    int skillPoints = 0;
+    int statPoints = 0;
 
     // Primary stats
     int agility = 0;
@@ -81,7 +81,7 @@ public class Player {
         // Level information
         System.out.println("\nLevel Stats:");
         System.out.println("Level: " + Integer.toString(this.level));
-        System.out.println("Skill Points: " + Integer.toString(this.skillPoints));
+        System.out.println("Stat Points: " + Integer.toString(this.statPoints));
         System.out.println("\nExperience: (" + this.experience + "/" + this.getMaxExperience() + ")");
         Main.printProgressBar((float) this.experience / (float) this.getMaxExperience());
         
@@ -102,12 +102,12 @@ public class Player {
 
         // Options
         System.out.println("\nWhat would you like to do now?");
-        System.out.println("1: Apply skill points\n2: Get 9999 exp (testing)\n0: Return to menu");
+        System.out.println("1: Apply stat points\n2: Get 50 exp (testing)\n0: Return to options");
         int choice = Main.scanner.nextInt(); Main.scanner.nextLine();
 
         switch (choice) {
-            case 1: this.applySkillPoints(); break;
-            case 2: this.addExperience(9999);; this.game.gameMenu(); break;
+            case 1: this.applyStatPoints(); break;
+            case 2: this.addExperience(50); this.viewProfile(); break;
             case 0: this.game.gameMenu(); break;
             default: this.profileOptions(); break;
         }
@@ -132,13 +132,63 @@ public class Player {
     public void levelUp() {
         this.experience -= this.getMaxExperience();
         this.level++;
-        this.skillPoints += SKILL_POINTS_PER_LEVEL;
+        this.statPoints += SKILL_POINTS_PER_LEVEL;
     }
 
-    // Applying skill points
-    public void applySkillPoints() {
-        System.out.println("\nThis feature has not been implemented yet.");
-        this.game.gameMenu();
+    // Applying stat points
+    public void applyStatPoints() {
+        if (this.statPoints > 0) {
+
+            // Prompting stat choice
+            System.out.println("\nWhat stat would you like to apply stat points to?");
+            System.out.println("1: Agility\n2: Dexterity\n3: Strength\n4: Vitality\n0: Cancel");
+            int statChoice = Main.scanner.nextInt(); Main.scanner.nextLine();
+
+            // Prompting points to spend
+            int pointsToSpend = promptStatPointsToSpend();
+
+            // Taking stat points
+            switch (statChoice) {
+                case 0: break;
+                case 1: case 2: case 3: case 4:
+                    this.statPoints -= pointsToSpend; break;
+            }
+
+            // Adding to stats
+            switch (statChoice) {
+                case 1: this.agility += pointsToSpend; break;
+                case 2: this.dexterity += pointsToSpend; break;
+                case 3: this.strength += pointsToSpend; break;
+                case 4: this.vitality += pointsToSpend; break;
+                case 0: System.out.println("Canceled stat point application."); break;
+                default: applyStatPoints(); break;
+            }
+
+            // Confirmation message
+            System.out.println("Successfully applied " + pointsToSpend + " stat points.");
+
+        } else {
+            System.out.println("\nYou don't have any stat points to spend!");
+        }
+        this.viewProfile();
+    }
+
+    // Helper function for choosing amount of stat points to spend
+    public int promptStatPointsToSpend() {
+
+        // Prompting choice
+        System.out.println("\nHow many stat points would you like to spend? You have " + this.statPoints + " stat points available.");
+        int choice = Main.scanner.nextInt(); Main.scanner.nextLine();
+
+        // Clamping choice
+        int clampedChoice = Math.max(Math.min(choice, this.statPoints), 0);
+        if (choice != clampedChoice) {
+            System.out.println("Specified number of stat points was out of range. Clamped choice to " + clampedChoice + ".");
+        }
+
+        // Returning
+        return clampedChoice;
+
     }
 
 }
