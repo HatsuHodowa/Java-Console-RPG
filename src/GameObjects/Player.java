@@ -45,7 +45,7 @@ public class Player {
 
         System.out.println("\nChoose your character's gender:");
         System.out.println("1: Male\n2: Female\n3: Not Specified");
-        int genderChoice = Main.scanner.nextInt(); Main.scanner.nextLine();
+        int genderChoice = Main.promptIntegerInput();
 
         switch (genderChoice) {
             case 1: this.gender = "Male"; break;
@@ -58,14 +58,37 @@ public class Player {
 
     // Prompting to choose name
     public void promptChooseName() {
+        this.promptChooseFirstName();
+        this.promptChooseLastName();
+    }
 
+    private void promptChooseFirstName() {
+
+        // Prompting
         System.out.println("\nInsert your character's first name:");
         String firstName = Main.scanner.nextLine();
-        this.firstName = firstName;
 
+        // Confirming
+        if (Main.confirmationMessage("\nAre you okay with the first name \"" + firstName + "\"? You can't change this later.")) {
+            this.firstName = firstName;
+        } else {
+            promptChooseFirstName();
+        }
+
+    }
+
+    private void promptChooseLastName() {
+
+        // Prompting
         System.out.println("\nInsert your character's last name:");
         String lastName = Main.scanner.nextLine();
-        this.lastName = lastName;
+
+        // Confirming
+        if (Main.confirmationMessage("\nAre you okay with the last name \"" + lastName + "\"? You can't change this later.")) {
+            this.lastName = lastName;
+        } else {
+            promptChooseLastName();
+        }
 
     }
 
@@ -103,7 +126,7 @@ public class Player {
         // Options
         System.out.println("\nWhat would you like to do now?");
         System.out.println("1: Apply stat points\n2: Get 50 exp (testing)\n0: Return to options");
-        int choice = Main.scanner.nextInt(); Main.scanner.nextLine();
+        int choice = Main.promptIntegerInput();
 
         switch (choice) {
             case 1: this.applyStatPoints(); break;
@@ -142,7 +165,7 @@ public class Player {
             // Prompting stat choice
             System.out.println("\nWhat stat would you like to apply stat points to?");
             System.out.println("1: Agility\n2: Dexterity\n3: Strength\n4: Vitality\n0: Cancel");
-            int statChoice = Main.scanner.nextInt(); Main.scanner.nextLine();
+            int statChoice = Main.promptIntegerInput();
 
             // Prompting points to spend
             int pointsToSpend = promptStatPointsToSpend();
@@ -178,7 +201,7 @@ public class Player {
 
         // Prompting choice
         System.out.println("\nHow many stat points would you like to spend? You have " + this.statPoints + " stat points available.");
-        int choice = Main.scanner.nextInt(); Main.scanner.nextLine();
+        int choice = Main.promptIntegerInput();
 
         // Clamping choice
         int clampedChoice = Math.max(Math.min(choice, this.statPoints), 0);
