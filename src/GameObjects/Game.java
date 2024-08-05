@@ -1,6 +1,8 @@
 package src.GameObjects;
 
 import src.*;
+import src.Enum.WorldRegions;
+import src.World.Explore;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -41,7 +43,6 @@ public class Game {
         List<File> gameFiles = Main.getGameFiles();
         int highestId = STARTING_ID - 1;
 
-        System.out.println(gameFiles);
         if (gameFiles != null) {
             for (File file : gameFiles) {
                 int fileId = Main.extractIdFromFileName(file.getName());
@@ -75,18 +76,27 @@ public class Game {
         // Prompting options
         Main.printSeparator();
         System.out.println("\nIt's a bright, sunny day. What would you like to do?");
-        System.out.println("1: View profile\n2: Save current game\n0: Return to main menu");
+        System.out.println("1: View profile\n2: Explore\n3: Save current game\n0: Return to main menu");
         
         int choice = Main.promptIntegerInput();
 
         // Processing choice
         switch (choice) {
             case 1: this.currentPlayer.viewProfile(); break;
-            case 2: saveGame(); gameMenu(); break;
+            case 2: explore(); gameMenu(); break;
+            case 3: saveGame(); gameMenu(); break;
             case 0: promptSaveGame(); Main.mainMenu(); break;
             default: gameMenu(); break;
         }
 
+    }
+
+    // Prompting explore
+    public void explore() {
+        WorldRegions region = Explore.promptRegionChoice();
+        if (region != null) {
+            new Explore(region);
+        }
     }
 
     // Prompting to save

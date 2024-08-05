@@ -2,7 +2,7 @@ package src.GameObjects;
 
 import src.*;
 
-public class Player {
+public class Player extends Creature {
 
     // Constants
     public static final int SKILL_POINTS_PER_LEVEL = 3;
@@ -19,12 +19,6 @@ public class Player {
     int level = 1;
     int experience = 0;
     int statPoints = 0;
-
-    // Primary stats
-    int agility = 0;
-    int dexterity = 0;
-    int strength = 0;
-    int vitality = 0;
     
     // Constructor
     public Player(Game game) { 
@@ -112,6 +106,7 @@ public class Player {
         System.out.println("\nPrimary Stats:");
         System.out.println("Agility: " + Integer.toString(this.agility));
         System.out.println("Dexterity: " + Integer.toString(this.dexterity));
+        System.out.println("Intelligence: " + Integer.toString(this.intelligence));
         System.out.println("Strength: " + Integer.toString(this.strength));
         System.out.println("Vitality: " + Integer.toString(this.vitality));
 
@@ -164,7 +159,7 @@ public class Player {
 
             // Prompting stat choice
             System.out.println("\nWhat stat would you like to apply stat points to?");
-            System.out.println("1: Agility\n2: Dexterity\n3: Strength\n4: Vitality\n0: Cancel");
+            System.out.println("1: Agility\n2: Dexterity\n3: Intelligence\n4: Strength\n5: Vitality\n0: Cancel");
             int statChoice = Main.promptIntegerInput();
 
             // Prompting points to spend
@@ -173,7 +168,7 @@ public class Player {
             // Taking stat points
             switch (statChoice) {
                 case 0: break;
-                case 1: case 2: case 3: case 4:
+                case 1: case 2: case 3: case 4: case 5:
                     this.statPoints -= pointsToSpend; break;
             }
 
@@ -181,8 +176,9 @@ public class Player {
             switch (statChoice) {
                 case 1: this.agility += pointsToSpend; break;
                 case 2: this.dexterity += pointsToSpend; break;
-                case 3: this.strength += pointsToSpend; break;
-                case 4: this.vitality += pointsToSpend; break;
+                case 3: this.intelligence += pointsToSpend; break;
+                case 4: this.strength += pointsToSpend; break;
+                case 5: this.vitality += pointsToSpend; break;
                 case 0: System.out.println("Canceled stat point application."); break;
                 default: applyStatPoints(); break;
             }

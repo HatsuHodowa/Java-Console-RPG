@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -26,6 +27,7 @@ public class Main {
     public static Scanner scanner = new Scanner(System.in);
     public static Gson gson = new Gson();
     public static Game currentGame;
+    public static Random random = new Random();
 
     // Main method
     public static void main(String[] args) {
